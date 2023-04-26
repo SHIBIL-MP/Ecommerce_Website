@@ -27,7 +27,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/shopingCart', {useNewUrlParser: true
     console.log(err)
 })
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.set("views");
 app.set("view engine", "ejs");
 
@@ -54,7 +54,7 @@ app.use(
 app.use("/", userRouter);
 app.use("/admin", adminRouter);
 
-const port = 6500; // use a different port number
+const port = 7500; // use a different port number
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);

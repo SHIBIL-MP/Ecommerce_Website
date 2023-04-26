@@ -1,9 +1,8 @@
 <%- include('../partials/userpartials/userHeader') %>
-/
   <!-- Header part end-->
 
   <!-- banner part start-->
-  <!-- <section class="banner_part">
+  <section class="banner_part">
     <div class="container">
       <div class="row align-items-center">
         <div class="col-lg-12">
@@ -62,137 +61,76 @@
                 </div>
               </div>
             </div>
-
+            <!-- <div class="single_banner_slider">
+                            <div class="row">
+                                <div class="col-lg-5 col-md-8">
+                                    <div class="banner_text">
+                                        <div class="banner_text_iner">
+                                            <h1>Cloth $ Wood Sofa</h1>
+                                            <p>Incididunt ut labore et dolore magna aliqua quis ipsum
+                                                suspendisse ultrices gravida. Risus commodo viverra</p>
+                                            <a href="#" class="btn_2">buy now</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="banner_img d-none d-lg-block">
+                                    <img src="img/banner_img.png" alt="">
+                                </div>
+                            </div>
+                        </div> -->
           </div>
           <div class="slider-counter"></div>
         </div>
       </div>
     </div>
-  </section> -->
+  </section>
+  <!-- banner part start-->
 
+ 
 
-
-
-  <!-- product_list part start-->
-  <!-- <section class="product_list best_seller section_padding">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-12">
-                    <div class="section_tittle text-center">
-                        <h2>Products<span>shop</span></h2>
-                    </div>
-                </div>
-            </div>
-            <div class="row align-items-center justify-content-between">
-                <div class="col-lg-12">
-                    <div class="best_product_slider owl-carousel">
-                        <div class="single_product_item">
-                            <img src="img/product/product_1.png" alt="">
-                            <div class="single_product_text">
-                                <h4>Quartz Belt Watch</h4>
-                                <h3>$150.00</h3>
-                            </div>
-                        </div>
-                        <div class="single_product_item">
-                            <img src="img/product/product_2.png" alt="">
-                            <div class="single_product_text">
-                                <h4>Quartz Belt Watch</h4>
-                                <h3>$150.00</h3>
-                            </div>
-                        </div>
-                        <div class="single_product_item">
-                            <img src="img/product/product_3.png" alt="">
-                            <div class="single_product_text">
-                                <h4>Quartz Belt Watch</h4>
-                                <h3>$150.00</h3>
-                            </div>
-                        </div>
-                        <div class="single_product_item">
-                            <img src="img/product/product_4.png" alt="">
-                            <div class="single_product_text">
-                                <h4>Quartz Belt Watch</h4>
-                                <h3>$150.00</h3>
-                            </div>
-                        </div>
-                        <div class="single_product_item">
-                            <img src="img/product/product_5.png" alt="">
-                            <div class="single_product_text">
-                                <h4>Quartz Belt Watch</h4>
-                                <h3>$150.00</h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> -->
-
-  <section class="owl-carousel active-product-area section_gap">
-    <!-- single product slide -->
-    <div class="single-product-slider">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-lg-6 text-center">
-            <div class="section-title">
-              <h1>Featured Products</h1>
-              <p>
-                Looking for the perfect pair of shoes? Look no further! Our
-                ecommerce store has a wide selection of shoes for every occasion
-                and style.
-              </p>
-            </div>
+  <!-- product_list start-->
+  <section class="product_list section_padding">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-12">
+          <div class="section_tittle text-center">
+            <h2 class="text-center">Awesome products</h2>
           </div>
         </div>
-        <div class="row">
-          <!-- single product -->
-
-          <% for(let product of allProducts) { %>
-            <div>
-              <%= product %>
-            </div>
-            <% if(true) { %>
-              <% if(product.isActive == true) { %>
-                <div class="col-lg-3 col-md-6 p-3">
-                  <div class="single-product">
-                    <a href="/detailPage/<%=product._id%>"><img class="img-fluid img-responsive"
-                        src="https://picsum.photos/seed/picsum/200/300" alt="" /></a>
-                    <div class="product-details">
-                      <h6>
-                        <%= product.name %>
-                      </h6>
-                      <h6>
-                        <%=product.category.name%>
-                      </h6>
-                      <div class="price">
-                        <h6>Rs.<%= product.price%>
-                        </h6>
-                        <!-- <h6 class="l-through">$210.00</h6> -->
-                      </div>
-                      <div class="prd-bottom">
-                        <a onclick="addToCart('<%=product._id%>')" class="social-info">
-                          <span class="ti-bag"></span>
-                          <p class="hover-text">Add to Bag</p>
-                        </a>
-                        <a onclick="addToWishlist('<%=product._id%>')" class="social-info">
-                          <span class="lnr lnr-heart"></span>
-                          <p class="hover-text">Wishlist</p>
-                        </a>
-                        <a href="/detailPage/<%=product._id%>" class="social-info">
-                          <span class="lnr lnr-move"></span>
-                          <p class="hover-text">view more</p>
-                        </a>
-                      </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="product_list_slider owl-carousel">
+            <div class="single_product_list_slider">
+              <div class="row align-items-center justify-content-between">
+             
+                <% for(let product of allProducts){ %>
+                <div class="col-lg-3 col-sm-6">
+                  <div class="single_product_item">
+                    <a href="/detailPage/<%=product._id%>">
+                    <img src="<%= product.images[0]?.url %>" alt=""></a>
+                    <div class="single_product_text">
+                      <h4><%= product.name %></h4>
+                      <h3>₹<%= product.price %></h3>
+                      <a onclick="addToCart('<%=product._id%>')" class="add_cart"><button class="btn btn-primary">Add to cart</button> <i class="ti-heart"></i></a>
                     </div>
                   </div>
                 </div>
                 <% } %>
-                  <% } %>
-                    <% } %>
+
+
+              </div>
+            </div>
+            <!-- <div class="single_product_list_slider">
+              <div class="row align-items-center justify-content-between">
+              </div>
+            </div> -->
+          </div>
         </div>
       </div>
     </div>
   </section>
-
+  <!-- product_list part start-->
   <script>
     function addToCart(productId) {
       console.log(productId);
@@ -230,40 +168,36 @@
         },
       });
     }
-
-    function addToWishlist(productId) {
-      console.log(productId);
-      $.ajax({
-        url: "/add-to-wishlist/" + productId,
-        method: "post",
-        success: (response) => {
-          console.log(response);
-          if (response.status) {
-            swal("Product added to wishlist", { icon: "success" });
-          } else if (response.existingProduct) {
-            swal("Product already exists in wishlist");
-          } else {
-            swal("You need to login first for adding product to wishlist", {
-              buttons: {
-                cancel: "Cancel",
-                catch: { text: "Login", value: "catch" },
-              },
-            }).then((value) => {
-              switch (value) {
-                case "catch":
-                  window.location = "/login";
-                  break;
-              }
-            });
-          }
-        },
-      });
-    }
+  
+    // function addToWishlist(productId) {
+    //   console.log(productId);
+    //   $.ajax({
+    //     url: "/add-to-wishlist/" + productId,
+    //     method: "post",
+    //     success: (response) => {
+    //       console.log(response);
+    //       if (response.status) {
+    //         swal("Product added to wishlist", { icon: "success" });
+    //       } else if (response.existingProduct) {
+    //         swal("Product already exists in wishlist");
+    //       } else {
+    //         swal("You need to login first for adding product to wishlist", {
+    //           buttons: {
+    //             cancel: "Cancel",
+    //             catch: { text: "Login", value: "catch" },
+    //           },
+    //         }).then((value) => {
+    //           switch (value) {
+    //             case "catch":
+    //               window.location = "/login";
+    //               break;
+    //           }
+    //         });
+    //       }
+    //     },
+    //   });
+    // }
   </script>
-  <!-- product_list part end-->
-
-
-
-  <!--::footer_part start::-->
+  
+<!--::footer_part start::-->
   <%- include('../partials/userpartials/userFooter') %>
-    <!--::footer_part end::-->

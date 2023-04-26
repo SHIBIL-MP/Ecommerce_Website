@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const User = require("../models/user");
 const Admin = require("../models/admin")
 const Category = require("../models/category")
-
+const Order = require("../models/order");
 const mongoose = require("mongoose");
 const Product = require("../models/product");
 
@@ -35,25 +35,25 @@ module.exports = {
       res.redirect("/admin/adminLogin");
     }
 
-      },
-    // if (admin) { 
-    //   if (email ==  myadminEmail  && password == myadminPassword) {
-    //     req.session.admin = admin._id;
-    //     res.redirect("/admin/adminDashboard");
-    //   } else {
-    //     req.session.loginErr = "Invalid Credentials";
-    //     res.redirect("/admin/login");
-    //   }
-    // } else {
-    //   req.session.loginErr = "Invalid Credentials";
-    //   res.redirect("/admin/login");
-    // }
+  },
+  // if (admin) { 
+  //   if (email ==  myadminEmail  && password == myadminPassword) {
+  //     req.session.admin = admin._id;
+  //     res.redirect("/admin/adminDashboard");
+  //   } else {
+  //     req.session.loginErr = "Invalid Credentials";
+  //     res.redirect("/admin/login");
+  //   }
+  // } else {
+  //   req.session.loginErr = "Invalid Credentials";
+  //   res.redirect("/admin/login");
+  // }
 
   userDetails: async (req, res) => {
     const allUsers = await User.find({});
     res.render("admin/userDetails", { allUsers });
   },
-  
+
   blockUser: async (req, res) => {
     const id = req.params.id;
     await User.findByIdAndUpdate(id, { isBlocked: true });
@@ -73,7 +73,7 @@ module.exports = {
     res.render("admin/productDetails", { allProducts });
   },
 
-  getAddProduct: async(req, res) => {
+  getAddProduct: async (req, res) => {
 
     // res.render("admin/addProducts")
     const productError = req.session.productErr;
@@ -93,34 +93,44 @@ module.exports = {
   //     })
   //     res.redirect('/admin/productDetails')
   // },
-  
+
   postAddProduct: async (req, res) => {
-    // console.log("adding product")
-    // console.log(req.body)
+    console.log("adding product")
+    console.log(req.body)
+    console.log(req.files)
+    // console.log(req.body);
+    // res.send("It worked")
+    // res.redirect("/admin/productDetails")
     const name = req.body.name;
     // console.log(req.body.name);
+
+
     const existingProduct = await Product.findOne({ name: name });
-    // console.log(existingProduct);
+    console.log(existingProduct);
     if (existingProduct) {
       req.session.productErr = "Product already exists";
       res.redirect("/admin/addProducts");
     } else {
       const category = await Category.findById(req.body.category);
-      // console.log(req.body.category);
+      console.log(req.body.category);
       // console.log(category);
-      // console.log(req.body, req.files);
+      console.log("here is form data")
+
+      console.log(req.body);
+      console.log("here is files")
+      console.log(req.files)
       // res.send("multer worked");
       const newProduct = new Product({
         name: req.body.name,
         price: req.body.price,
         description: req.body.description,
         stock: req.body.stock,
-        category: category,
+        category
       });
-      // newProduct.images = req.files.map((f) => ({
-      //   url: f.path,
-      //   filename: f.filename,
-      // }));
+      newProduct.images = req.files.map((obj) => ({
+        url: obj.path,
+        filename: obj.filename,
+      }));
       await newProduct.save();
       console.log(newProduct);
       res.redirect("/admin/products");
@@ -135,7 +145,7 @@ module.exports = {
       ).populate("category");
       console.log(product)
       const categories = await Category.find({});
-      console.log( categories)
+      console.log(categories)
       res.render("admin/editProducts", { product, categories });
     } catch (err) {
       console.error(err);
@@ -145,7 +155,7 @@ module.exports = {
 
   updateProduct: async (req, res) => {
     console.log("the recieved data is ")
-    const id =  req.body.id
+    const id = req.body.id
 
     // const category = await Category.findById(req.body.category);
 
@@ -174,7 +184,7 @@ module.exports = {
 
 
     // await updatedProduct.save();
- 
+
     // console.log(updatedProduct);
     res.redirect("/admin/products");
   },
@@ -190,7 +200,7 @@ module.exports = {
     await Product.findByIdAndUpdate(id, { isActive: true });
     res.redirect("/admin/products");
   },
-  
+
   getCategories: async (req, res) => {
     const categories = await Category.find({});
     res.render("admin/categories", { categories });
@@ -215,7 +225,7 @@ module.exports = {
       res.redirect("/admin/categories");
     }
   },
-  
+
   getEditCategory: async (req, res) => {
     try {
       const id = req.params.id;
@@ -230,13 +240,13 @@ module.exports = {
   updateCategory: async (req, res) => {
     const id = req.params.id;
     await Category.findByIdAndUpdate(id, req.body, {
-      new: true, 
-     
-     
+      new: true,
+
+
     });
     res.redirect("/admin/categories");
   },
-  
+
 
   isActiveCategory: async (req, res) => {
     const id = req.params.id;
@@ -248,6 +258,38 @@ module.exports = {
     const id = req.params.id;
     await Category.findByIdAndUpdate(id, { isActive: true });
     res.redirect("/admin/categories");
+  },
+
+  getOrders: async (req, res) => {
+    const orders = await Order.find({});
+    res.render("admin/orders", { orders });
+  },
+
+  getEditOrder: async (req, res) => {
+    try {
+      var orderId = req.params.id;
+      const order = await Order.findOne({
+        _id: mongoose.Types.ObjectId(orderId),
+      });
+      console.log(order);
+      res.render("admin/editOrder", { order });
+    } catch (err) {
+      console.error(err);
+      res.status(404).render("admin/404Error");
+    }
+  },
+
+  updateOrder: async (req, res) => {
+    var orderId = req.params.id;
+    await Order.findByIdAndUpdate(
+      orderId,
+      {
+        payment_status: req.body.payment_status,
+        order_status: req.body.order_status,
+      },
+      { new: true, runValidators: true }
+    );
+    res.redirect("/admin/orders");
   },
 
   getAdminLogout: (req, res) => {
