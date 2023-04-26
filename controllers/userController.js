@@ -1,6 +1,8 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
 const mongoose = require("mongoose");
+const Product = require("../models/product");
+const Cart = require("../models/cart");
 
 // const randomstring = require("randomstring");
 const Category = require("../models/category");
@@ -27,11 +29,9 @@ module.exports = {
   // },
   postSignup: async (req, res) => {
     userDetails = req.body;
-    // res.render("user/otp");
-    // // res.render("user/otp", { userDetails : {username: "shibil" , email: "shibil@g.in", password: "nothing", mobile: 3286848, } });
-    // let categories = await Category.find({});
+    let categories = await Category.find({});
     let mailDetails = {
-      from: "shibilmp8565@gmail.com",
+      from: "sofabuy8565@gmail.com",
       to: userDetails.email,
       subject: "SOFABUY ACCOUNT REGISTRATION",
       html: `<p>YOUR OTP FOR REGISTERING IN SOFABUY IS ${mailer.OTP}</p>`,
@@ -43,16 +43,16 @@ module.exports = {
       console.log(result);
       if (result) {
         var count = 0;
-        res.render("user/index", {
+        res.render("user/signup", {
           user: "",
           count,
-          // categories,
+          categories,
           err_message: "Email or Mobile already exists",
         });
       } else {
         mailer.mailTransporter.sendMail(mailDetails, function (err, data) {
           if (err) {
-            console.log(err);
+            console.log("error occurred", err);
           } else {
             console.log("Email Sent Successfully");
             res.render("user/otp", { userDetails });
@@ -119,7 +119,7 @@ module.exports = {
       console.log(user);
       user.save().then(() => {
         req.session.user = user._id;
-        res.redirect("/");
+        res.redirect("/index");
       });
     } else {
       res.render("user/otp", {
@@ -137,43 +137,92 @@ module.exports = {
  
 
 
-  getLanding: (req, res) => {
-    if (!req.session.user) {
-      res.redirect('/login')
-      return;
+  getLanding: async(req, res) => {
+  //   if (!req.session.user) {
+  //     res.redirect('/login')
+  //     return;
+  //   }
+  //   res.render('user/index')
+  // },
+  let user = req.session.user;
+  let userId = req.session.user;
+  let categories = await Category.find({});
+  // let coupon = await Coupon.find({});
+  var count = 0;
+
+  if (req.session.user) {
+    var count = 0;
+    var userr = await User.findOne({ _id: userId });
+    const blocked = userr.isBlocked;
+    if (blocked === true) {
+      req.session.destroy();
+      res.redirect("/login");
+    } else {
+      let cart = await Cart.findOne({ userId });
+      if (cart) {
+        var count = await Cart.aggregate([
+          { $match: { userId: mongoose.Types.ObjectId(userId) } },
+          { $project: { products: { $size: "$products" } } },
+        ]);
+        count = count[0].products;
+      } else {
+        count = 0;
+      }
+      const allProducts = await Product.find({})
+        .limit(8)
+        .populate("category");
+      res.render("user/index", {
+        user,
+        allProducts,
+        count,
+        categories
+        // coupon,
+      });
     }
-    res.render('user/index')
-  },
+  } else {
+    const allProducts = await Product.find({}).limit(8).populate("category");
+    res.render("user/index", {
+      user,
+      allProducts,
+      count,
+      categories
+      // coupon,
+    });
+  }
+},
 
   detailPage: async (req, res) => {
-    try {
-      let categories = await Category.find({});
-      let user = req.session.user;
-      const id = req.params.id;
-      const product = await Product.findById(id).populate("category");
-      let userId = req.session.user;
-      var count = 0;
-      if (req.session.user) {
-        var count = 0;
-        let cart = await Cart.findOne({ userId });
-        if (cart) {
-          var count = await Cart.aggregate([
-            { $match: { userId: mongoose.Types.ObjectId(userId) } },
-            { $project: { products: { $size: "$products" } } },
-          ]);
-          count = count[0].products;
-        } else {
-          count = 0;
-        }
-      }
-      res.render("user/detailPage", { user, product, count, categories });
-    } catch (err) {
-      console.error(err);
-      res.status(404).render("user/404Error");
-    }
+    res.render("user/detailPage")
   }
-
 }
+//     try {
+//       let categories = await Category.find({});
+//       let user = req.session.user;
+//       const id = req.params.id;
+//       const product = await Product.findById(id).populate("category");
+//       let userId = req.session.user;
+//       var count = 0;
+//       if (req.session.user) {
+//         var count = 0;
+//         let cart = await Cart.findOne({ userId });
+//         if (cart) {
+//           var count = await Cart.aggregate([
+//             { $match: { userId: mongoose.Types.ObjectId(userId) } },
+//             { $project: { products: { $size: "$products" } } },
+//           ]);
+//           count = count[0].products;
+//         } else {
+//           count = 0;
+//         }
+//       }
+//       res.render("user/detailPage", { user, product, count, categories });
+//     } catch (err) {
+//       console.error(err);
+//       res.status(404).render("user/404Error");
+//     }
+//   }
+
+// }
     // getLanding:(req, res)=>{
     //   res.render('user/index')
 
@@ -186,4 +235,3 @@ module.exports = {
     // getLogin:(req,res)=>{
     //   res.send('sdfghjkl')
     // }
-

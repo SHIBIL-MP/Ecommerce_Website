@@ -15,7 +15,7 @@
               <span>A code has been sent to</span>
               <small><%=userDetails.email%> </small>
             </div>
-            <form action="/otp" method="post">
+            <form action="user/otp" method="post">
               <% if(locals.err_message) { %>
               <p class="error" style="color: red"><%= err_message %></p>
               <% } %>

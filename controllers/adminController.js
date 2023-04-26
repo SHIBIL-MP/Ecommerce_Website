@@ -35,7 +35,8 @@ module.exports = {
       res.redirect("/admin/adminLogin");
     }
 
-    // if (admin) {
+      },
+    // if (admin) { 
     //   if (email ==  myadminEmail  && password == myadminPassword) {
     //     req.session.admin = admin._id;
     //     res.redirect("/admin/adminDashboard");
@@ -47,7 +48,7 @@ module.exports = {
     //   req.session.loginErr = "Invalid Credentials";
     //   res.redirect("/admin/login");
     // }
-  },
+
   userDetails: async (req, res) => {
     const allUsers = await User.find({});
     res.render("admin/userDetails", { allUsers });
@@ -94,18 +95,20 @@ module.exports = {
   // },
   
   postAddProduct: async (req, res) => {
+    // console.log("adding product")
+    // console.log(req.body)
     const name = req.body.name;
-    console.log(req.body.name);
+    // console.log(req.body.name);
     const existingProduct = await Product.findOne({ name: name });
-    console.log(existingProduct);
+    // console.log(existingProduct);
     if (existingProduct) {
       req.session.productErr = "Product already exists";
       res.redirect("/admin/addProducts");
     } else {
       const category = await Category.findById(req.body.category);
-      console.log(req.body.category);
-      console.log(category);
-      console.log(req.body, req.files);
+      // console.log(req.body.category);
+      // console.log(category);
+      // console.log(req.body, req.files);
       // res.send("multer worked");
       const newProduct = new Product({
         name: req.body.name,

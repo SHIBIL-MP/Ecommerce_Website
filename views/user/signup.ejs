@@ -39,6 +39,9 @@
               <h3>Welcome Back ! <br>
                 Please Signup now</h3>
               <form class="row contact_form" action="/signup" method="POST" onsubmit="return checkLoginForm(this);">
+                <% if(locals.err_message) { %> 
+                  <p class="error" style="color:red"><%= err_message %> </p>
+                  <% } %> 
                 <div class="col-md-12 form-group">
                   <input type="text" class="form-control" id="username" name="username" placeholder="Username"
                     onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'">

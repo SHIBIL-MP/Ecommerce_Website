@@ -14,8 +14,8 @@ router.post('/signup',userController.postSignup)
 router.get('/login',userController.getLogin)
 router.post('/login',userController.postLogin)
 router.get('/index',userController.getLanding)
-router.get('/detailpage/:id',userController.detailPage)
-router.post('/otp',userController.postOtp);
+router.get('/detailpage',userController.detailPage)
+router.post('/user/otp',userController.postOtp);
 
 
 

@@ -53,10 +53,13 @@ app.use(
 
 app.use("/", userRouter);
 app.use("/admin", adminRouter);
-    
-    app.listen(4000, ()=>{
-    console.log("APP IS LISTENING ON PORT 4000!")
+
+const port = 6500; // use a different port number
+
+app.listen(port, () => {
+  console.log(`Server listening on port ${port}`);
+});
    
-})
+
 
 
