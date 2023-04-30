@@ -2,6 +2,7 @@
   <!-- Header part end-->
 
   <!-- banner part start-->
+  <!-- <input  type="text" value="<%= user %>" id="userId"> -->
   <section class="banner_part">
     <div class="container">
       <div class="row align-items-center">
@@ -86,7 +87,7 @@
   </section>
   <!-- banner part start-->
 
- 
+
 
   <!-- product_list start-->
   <section class="product_list section_padding">
@@ -103,20 +104,24 @@
           <div class="product_list_slider owl-carousel">
             <div class="single_product_list_slider">
               <div class="row align-items-center justify-content-between">
-             
+
                 <% for(let product of allProducts){ %>
-                <div class="col-lg-3 col-sm-6">
-                  <div class="single_product_item">
-                    <a href="/detailPage/<%=product._id%>">
-                    <img src="<%= product.images[0]?.url %>" alt=""></a>
-                    <div class="single_product_text">
-                      <h4><%= product.name %></h4>
-                      <h3>₹<%= product.price %></h3>
-                      <a onclick="addToCart('<%=product._id%>')" class="add_cart"><button class="btn btn-primary">Add to cart</button> <i class="ti-heart"></i></a>
+                  <div class="col-lg-3 col-sm-6">
+                    <div class="single_product_item">
+                      <a href="/detailPage/<%=product._id%>">
+                        <img src="<%= product.images[0]?.url %>" alt=""></a>
+                      <div class="single_product_text">
+                        <h4>
+                          <%= product.name %>
+                        </h4>
+                        <h3>₹<%= product.price %>
+                        </h3>
+                        <a onclick="addToCart('<%=product._id%>', '<%= user %>')" class="add_cart"><button class="btn btn-primary">Add
+                            to cart</button> <i class="ti-heart"></i></a>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <% } %>
+                  <% } %>
 
 
               </div>
@@ -133,10 +138,12 @@
   <!-- product_list part start-->
   <script>
     function addToCart(productId) {
-      console.log(productId);
+      // let user = document.getElementById('userId')
+      console.log(productId, userId);
       $.ajax({
         url: "/add-to-cart/" + productId,
         method: "post",
+        data: { productId: productId, user: userId },
         success: (response) => {
           console.log(response);
           if (response.status) {
@@ -156,7 +163,7 @@
               buttons: {
                 cancel: "Cancel",
                 catch: { text: "Login", value: "catch" },
-              },
+              }, no
             }).then((value) => {
               switch (value) {
                 case "catch":
@@ -168,7 +175,7 @@
         },
       });
     }
-  
+
     // function addToWishlist(productId) {
     //   console.log(productId);
     //   $.ajax({
@@ -198,6 +205,6 @@
     //   });
     // }
   </script>
-  
-<!--::footer_part start::-->
+
+  <!--::footer_part start::-->
   <%- include('../partials/userpartials/userFooter') %>

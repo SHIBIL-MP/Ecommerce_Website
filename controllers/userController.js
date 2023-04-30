@@ -3,10 +3,11 @@ const User = require("../models/user");
 const mongoose = require("mongoose");
 const Product = require("../models/product");
 const Cart = require("../models/cart");
-
+require('sweetalert')
 // const randomstring = require("randomstring");
 const Category = require("../models/category");
-const mailer = require("../middlewares/otp")
+const mailer = require("../middlewares/otp");
+const session = require("express-session");
 
 
 module.exports = {
@@ -146,6 +147,8 @@ module.exports = {
     //   res.render('user/index')
     // },
     let user = req.session.user;
+    console.log("user is")
+    console.log(user)
     let userId = req.session.user;
     let categories = await Category.find({});
     // let coupon = await Coupon.find({});
@@ -504,6 +507,19 @@ module.exports = {
         res.json({ removeProduct: true });
       });
     },
+
+
+    addToCart:(req, res)=>{
+      const productId = req.params.id;
+      const userId = req.body;
+      console.log(productId)
+      console.log(userId)
+      // if( !userId ){
+            
+      // }
+    
+
+    }
 
     
 }
